@@ -1,5 +1,6 @@
+import os
 # The address and port to bind to
-bind = "0.0.0.0:10000"
+bind = f"0.0.0.0:{os.environ.get('PORT', '10000')}"
 
 # The number of worker processes
 workers = 2
