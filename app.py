@@ -4,12 +4,17 @@ import librosa
 import tensorflow as tf
 from flask import Flask, request, jsonify
 import logging
+import os
+
+#this is the cmd line for deploying
+# gcloud run deploy coeurai-api --source . --region asia-south2 --allow-unauthenticated --clear-base-image
 
 # Suppress TensorFlow logging
 logging.getLogger('tensorflow').setLevel(logging.ERROR)
 
 # --- Configuration ---
-MODEL_PATH = "end_to_end_model_2.12.tflite"
+APP_DIR = os.path.dirname(os.path.abspath(__file__))
+MODEL_PATH = os.path.join(APP_DIR, "end_to_end_model_legacy.tflite")
 LABELS = ["Normal", "Pneumonia", "TB"]
 SAMPLE_RATE = 16000
 AUDIO_LENGTH_SAMPLES = 32000 # 2 second
@@ -66,4 +71,3 @@ def handle_predict():
     except Exception as e:
         print(f"Error during prediction: {e}")
         return jsonify({"error": "Failed to process audio file"}), 500
-
